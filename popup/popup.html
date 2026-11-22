@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gemini Extra</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <main class="popup">
+    <header class="popup-header">
+      <img src="../icons/icon.svg" alt="Gemini Extra" class="logo" />
+      <div class="header-text">
+        <h1>Gemini Extra</h1>
+        <p class="subtitle">Suivi quota (20s)</p>
+      </div>
+    </header>
+
+    <section class="control-row">
+      <label for="toggle-enabled" class="control-label">
+        <span>Activer l'extension</span>
+        <small id="status-text">Chargement...</small>
+      </label>
+      <input type="checkbox" id="toggle-enabled" class="switch" />
+    </section>
+
+    <section class="quota-section" id="quota-section">
+      <div class="quota-card">
+        <div class="quota-top">
+          <span class="quota-label">Utilisation actuelle</span>
+          <span class="quota-value" id="popup-current-value">--</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="popup-current-bar" style="width: 0%"></div>
+        </div>
+        <div class="quota-reset" id="popup-current-reset">En attente de gemini.google.com...</div>
+      </div>
+
+      <div class="quota-card">
+        <div class="quota-top">
+          <span class="quota-label">Limite hebdomadaire</span>
+          <span class="quota-value" id="popup-weekly-value">--</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="popup-weekly-bar" style="width: 0%"></div>
+        </div>
+        <div class="quota-reset" id="popup-weekly-reset">En attente de gemini.google.com...</div>
+      </div>
+
+      <div class="quota-footer">
+        <span id="popup-updated-at">Pas encore synchronisé</span>
+        <a id="popup-usage-link" href="https://gemini.google.com/usage" target="_blank" rel="noopener noreferrer">Ouvrir /usage ↗</a>
+      </div>
+    </section>
+  </main>
+
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,696 @@
+/* ============================================================================
+   Gemini Extra — Thème Material Design 3 intégré à Google Gemini
+   ============================================================================ */
+
+/* Supprime le contour blanc de focus initial dans le menu des modèles */
+.cdk-overlay-pane .cdk-program-focused,
+.cdk-overlay-pane [role="menuitem"]:focus,
+.cdk-overlay-pane .mat-mdc-menu-item:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+@keyframes ge-pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes ge-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================================================
+   1. Bouton "Voir utilisation" dans le menu des modèles
+   ============================================================================ */
+.ge-model-menu-usage-section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 4px 8px 0;
+  font-family: "Google Sans Text", "Google Sans", Roboto, system-ui, -apple-system, sans-serif;
+}
+
+.ge-usage-menu-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: #e3e3e3;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color 0.16s cubic-bezier(0.2, 0, 0, 1);
+  text-align: left;
+}
+
+.ge-usage-menu-btn:hover,
+.ge-model-menu-usage-section.ge-active .ge-usage-menu-btn {
+  background-color: rgba(232, 234, 237, 0.08);
+}
+
+.ge-usage-menu-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ge-usage-menu-left svg {
+  color: #a8c7fa;
+  flex-shrink: 0;
+}
+
+.ge-usage-menu-arrow {
+  display: inline-flex;
+  align-items: center;
+  color: #9aa0a6;
+  margin-left: 12px;
+}
+
+.ge-usage-menu-divider {
+  height: 1px;
+  margin: 6px 4px 4px;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* ============================================================================
+   2. Panneau latéral "Utilisation" (style Material 3)
+   ============================================================================ */
+.ge-usage-flyout {
+  position: fixed;
+  width: 312px;
+  padding: 14px;
+  border-radius: 16px;
+  background-color: #1e1f20;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.52), 0 2px 6px rgba(0, 0, 0, 0.32);
+  color: #e3e3e3;
+  font-family: "Google Sans Text", "Google Sans", Roboto, system-ui, -apple-system, sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 2147483647;
+  animation: ge-pop-in 0.15s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.ge-usage-flyout[hidden] {
+  display: none;
+}
+
+.ge-flyout-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2px;
+}
+
+.ge-flyout-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #e3e3e3;
+}
+
+.ge-live-badge {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background-color: rgba(168, 199, 250, 0.12);
+  color: #a8c7fa;
+}
+
+.ge-refresh-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: #c4c7c5;
+  cursor: pointer;
+  transition: background-color 0.16s ease, color 0.16s ease;
+}
+
+.ge-refresh-btn:hover {
+  background-color: rgba(232, 234, 237, 0.08);
+  color: #e3e3e3;
+}
+
+.ge-refresh-btn.ge-spinning svg {
+  animation: ge-spin 0.9s linear infinite;
+}
+
+.ge-quota-card {
+  background-color: #131314;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 11px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ge-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.ge-card-label {
+  font-weight: 500;
+  color: #e3e3e3;
+}
+
+.ge-card-value {
+  font-weight: 500;
+  color: #c4c7c5;
+  font-variant-numeric: tabular-nums;
+}
+
+.ge-progress-track {
+  width: 100%;
+  height: 5px;
+  border-radius: 999px;
+  background-color: #282a2c;
+  overflow: hidden;
+}
+
+.ge-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background-color: #e3e3e3;
+  transition: width 0.35s cubic-bezier(0.2, 0, 0, 1), background-color 0.25s ease;
+  min-width: 5px;
+}
+
+.ge-progress-fill.ge-level-ok {
+  background-color: #a8c7fa;
+}
+
+.ge-progress-fill.ge-level-warn {
+  background-color: #fdd663;
+}
+
+.ge-progress-fill.ge-level-danger {
+  background-color: #f2b8b5;
+}
+
+.ge-card-reset {
+  font-size: 12px;
+  color: #9aa0a6;
+}
+
+.ge-flyout-error {
+  font-size: 12px;
+  color: #f2b8b5;
+  background-color: rgba(242, 184, 181, 0.1);
+  border: 1px solid rgba(242, 184, 181, 0.22);
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+
+.ge-flyout-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 2px 0;
+  font-size: 11px;
+  color: #9aa0a6;
+}
+
+.ge-usage-link {
+  border: none;
+  background: transparent;
+  padding: 2px 4px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: inherit;
+  color: #a8c7fa;
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.ge-usage-link:hover {
+  background-color: rgba(168, 199, 250, 0.1);
+}
+
+/* ============================================================================
+   3. Bulle circulaire compacte (5h | 7j) à côté de la barre de prompt
+   ============================================================================ */
+.ge-quota-bubble {
+  position: fixed;
+  width: 58px;
+  height: 58px;
+  padding: 0 3px;
+  border-radius: 50%;
+  background-color: #1e1f20;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.42), 0 1px 3px rgba(0, 0, 0, 0.28);
+  color: #e3e3e3;
+  font-family: "Google Sans Text", "Google Sans", Roboto, system-ui, -apple-system, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 9998;
+  transition: background-color 0.16s cubic-bezier(0.2, 0, 0, 1), border-color 0.16s ease;
+  box-sizing: border-box;
+}
+
+.ge-quota-bubble:hover {
+  background-color: #282a2c;
+  border-color: rgba(168, 199, 250, 0.35);
+}
+
+.ge-bubble-half {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.15;
+  min-width: 0;
+}
+
+.ge-bubble-sep {
+  width: 1px;
+  height: 24px;
+  background-color: rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+.ge-bubble-tag {
+  font-size: 9px;
+  font-weight: 500;
+  color: #9aa0a6;
+  letter-spacing: 0.02em;
+}
+
+.ge-bubble-pct {
+  font-size: 11px;
+  font-weight: 500;
+  color: #e3e3e3;
+  font-variant-numeric: tabular-nums;
+  margin-top: 1px;
+}
+
+.ge-bubble-pct.ge-level-ok {
+  color: #a8c7fa;
+}
+
+.ge-bubble-pct.ge-level-warn {
+  color: #fdd663;
+}
+
+.ge-bubble-pct.ge-level-danger {
+  color: #f2b8b5;
+}
+
+/* ============================================================================
+   4. Prédicteur de tokens natif dans la barre de prompt + Popover
+   ============================================================================ */
+.ge-token-widget {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 32px;
+  padding: 0 10px;
+  margin-right: 4px;
+  border-radius: 999px;
+  background-color: transparent;
+  border: none;
+  color: #c4c7c5;
+  font-family: "Google Sans Text", "Google Sans", Roboto, system-ui, -apple-system, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  flex-shrink: 0;
+  user-select: none;
+  cursor: pointer;
+  transition: background-color 0.16s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.ge-token-widget:hover {
+  background-color: rgba(232, 234, 237, 0.08);
+}
+
+.ge-token-widget.ge-tok-live {
+  background-color: rgba(168, 199, 250, 0.12);
+}
+
+.ge-tok-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.ge-tok-in {
+  color: #a8c7fa;
+}
+
+.ge-tok-out {
+  color: #a8dab5;
+}
+
+.ge-tok-turn {
+  color: #e3e3e3;
+}
+
+.ge-tok-conv {
+  color: #fdd663;
+}
+
+.ge-tok-arrow,
+.ge-tok-sigma {
+  font-size: 10px;
+  opacity: 0.78;
+}
+
+.ge-tok-sep {
+  color: rgba(255, 255, 255, 0.22);
+  font-size: 11px;
+}
+
+.ge-token-popover {
+  position: fixed;
+  width: 280px;
+  padding: 14px;
+  border-radius: 16px;
+  background-color: #1e1f20;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.52), 0 2px 6px rgba(0, 0, 0, 0.32);
+  color: #e3e3e3;
+  font-family: "Google Sans Text", "Google Sans", Roboto, system-ui, -apple-system, sans-serif;
+  font-size: 12.5px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  z-index: 2147483647;
+  animation: ge-pop-in 0.15s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.ge-token-popover[hidden] {
+  display: none;
+}
+
+.ge-tpop-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+
+.ge-tpop-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #e3e3e3;
+}
+
+.ge-tpop-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.ge-tpop-refresh,
+.ge-tpop-reset {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: #c4c7c5;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.16s ease, color 0.16s ease;
+}
+
+.ge-tpop-refresh:hover,
+.ge-tpop-reset:hover {
+  background-color: rgba(232, 234, 237, 0.08);
+  color: #e3e3e3;
+}
+
+.ge-tpop-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: #c4c7c5;
+}
+
+.ge-tpop-row strong {
+  font-weight: 500;
+  color: #e3e3e3;
+  font-variant-numeric: tabular-nums;
+}
+
+.ge-tpop-total strong {
+  color: #a8dab5;
+}
+
+.ge-tpop-conv strong {
+  color: #fdd663;
+}
+
+.ge-tpop-sub {
+  font-size: 11px;
+  color: #9aa0a6;
+  margin-top: -3px;
+}
+
+.ge-tpop-divider {
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.08);
+  margin: 2px 0;
+}
+
+/* ============================================================================
+   5. Menu "@" amélioré : séparation Médias / Connecteurs / Compétences + Filtre
+   ============================================================================ */
+.ge-at-enhanced-pane {
+  max-height: 76vh !important;
+  min-width: min(760px, 92vw) !important;
+  max-width: 92vw !important;
+}
+
+.ge-at-enhanced-pane > *,
+.ge-at-enhanced-pane .mat-mdc-menu-panel,
+.ge-at-enhanced-pane .mat-mdc-menu-content,
+.ge-at-enhanced-pane [role="listbox"],
+.ge-at-enhanced-pane [role="menu"],
+.ge-at-enhanced-pane [style*="max-height"] {
+  max-height: 74vh !important;
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+.ge-at-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px;
+  background-color: #1e1f20;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: "Google Sans Text", "Google Sans", Roboto, system-ui, -apple-system, sans-serif;
+}
+
+.ge-at-tabs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ge-at-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 11px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: #131314;
+  color: #c4c7c5;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.ge-at-tab:hover {
+  background-color: #282a2c;
+  color: #e3e3e3;
+}
+
+.ge-at-tab.ge-at-tab-active {
+  background-color: rgba(168, 199, 250, 0.16);
+  border-color: rgba(168, 199, 250, 0.35);
+  color: #a8c7fa;
+}
+
+.ge-at-count {
+  font-size: 10.5px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: inherit;
+  font-variant-numeric: tabular-nums;
+}
+
+.ge-at-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 10px;
+  background-color: #131314;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #9aa0a6;
+}
+
+.ge-at-search-wrap:focus-within {
+  border-color: rgba(168, 199, 250, 0.45);
+  color: #a8c7fa;
+}
+
+.ge-at-search {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: #e3e3e3;
+  font-family: inherit;
+  font-size: 12.5px;
+}
+
+.ge-at-search::placeholder {
+  color: #9aa0a6;
+}
+
+.ge-at-hidden {
+  display: none !important;
+}
+
+/* ============================================================================
+   6. Séparateurs fins entre chaque bouton du menu "+"
+   ============================================================================ */
+.ge-plus-line-sep {
+  position: relative !important;
+}
+
+.ge-plus-line-sep::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  height: 1px !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+}
+
+/* Menu "+" à plat : déclencheurs de sous-menus masqués, sous-menus ouverts de façon invisible */
+.ge-plus-hidden-trigger {
+  display: none !important;
+}
+
+gem-menu[data-ge-flattened] > .cdk-overlay-popover,
+gem-menu[data-ge-flattened] > gem-popover > * {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.ge-plus-dividers-pane,
+.ge-plus-dividers-pane gem-menu:not(.submenu-gem-menu),
+.ge-plus-dividers-pane .mat-mdc-menu-panel,
+.ge-plus-dividers-pane .mat-mdc-menu-content {
+  max-height: 88vh !important;
+  height: auto !important;
+  overflow-y: visible !important;
+}
+
+.ge-plus-dividers-pane mat-divider,
+.ge-plus-dividers-pane [role="separator"],
+.ge-plus-dividers-pane hr {
+  display: none !important;
+}
+
+/* ============================================================================
+   7. Barre latérale gauche : "Plus" masqué, Personnaliser / Vidéos / Gems directs
+   ============================================================================ */
+.ge-sidebar-more-hidden {
+  display: none !important;
+}
+
+[data-ge-side-flattened] > .cdk-overlay-popover {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* ============================================================================
+   8. Sélecteur de modèle : niveau de réflexion demandé après le choix du modèle
+   ============================================================================ */
+gem-menu[data-test-id="gem-mode-menu"] > gem-menu-item[value="thinking_level"],
+gem-menu[data-test-id="gem-mode-menu"] > mat-divider:has(+ gem-menu-item[value="thinking_level"]),
+gem-menu[data-test-id="gem-mode-menu"] > .cdk-overlay-popover {
+  display: none !important;
+}
+
+/* Menu rouvert en arrière-plan le temps de savoir si le modèle a des niveaux */
+html.ge-think-pending .cdk-overlay-pane:has(gem-menu[data-test-id="gem-mode-menu"]) {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Étape "niveau de réflexion" : seul le choix du niveau reste visible */
+gem-menu.ge-think-step-active > :not(#gemini-extra-think-step) {
+  display: none !important;
+}
+
+.ge-think-header {
+  padding: 8px 16px 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #9aa0a6;
+}
+
+#gemini-extra-think-step:focus {
+  outline: none;
+}

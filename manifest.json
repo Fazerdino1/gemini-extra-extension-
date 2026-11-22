@@ -1,0 +1,49 @@
+{
+  "manifest_version": 3,
+  "name": "Gemini Extra",
+  "version": "0.1.0",
+  "description": "Ajoute des fonctionnalités supplémentaires à l'interface web de Google Gemini.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "gemini-extra@local.dev",
+      "strict_min_version": "109.0"
+    }
+  },
+  "icons": {
+    "48": "icons/icon.svg",
+    "96": "icons/icon.svg"
+  },
+  "permissions": [
+    "storage",
+    "declarativeNetRequest",
+    "webRequest",
+    "webRequestBlocking"
+  ],
+  "host_permissions": [
+    "https://gemini.google.com/*"
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "Gemini Extra",
+    "default_icon": "icons/icon.svg"
+  },
+  "background": {
+    "scripts": [
+      "background/background.js"
+    ]
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://gemini.google.com/*"
+      ],
+      "js": [
+        "content/content.js"
+      ],
+      "css": [
+        "content/content.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}
