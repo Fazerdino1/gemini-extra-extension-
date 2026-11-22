@@ -1472,8 +1472,12 @@
   let isAskingThinkingLevel = false;
   let thinkStepMenu = null;
 
+  // Vue large : bouton dans la barre de saisie ; vue étroite : bouton dans l'en-tête, sans data-test-id
   function getModeMenuButton() {
-    return document.querySelector('[data-test-id="bard-mode-menu-button"]');
+    const tagged = document.querySelector('[data-test-id="bard-mode-menu-button"]');
+    if (tagged) return tagged;
+    const buttons = Array.from(document.querySelectorAll("bard-mode-switcher button"));
+    return buttons.find((b) => b.getBoundingClientRect().width > 0) || buttons[0] || null;
   }
 
   function getModeMenu() {
@@ -1484,10 +1488,24 @@
     return modeMenu?.querySelector(':scope > gem-menu-item[value="thinking_level"]') || null;
   }
 
-  // Le sous-menu des niveaux est déjà rendu (caché) dans le menu, via aria-controls
+  // Vue large : sous-menu déjà rendu (caché), relié par aria-controls.
+  // Vue étroite : accordéon, les niveaux n'existent dans .expand-content qu'une fois déplié.
   function getThinkingLevelItems(trigger) {
-    const submenu = trigger && document.getElementById(trigger.getAttribute("aria-controls"));
-    return submenu ? Array.from(submenu.querySelectorAll("gem-menu-item")) : [];
+    if (!trigger) return [];
+    const submenu = document.getElementById(trigger.getAttribute("aria-controls") || "");
+    const container = submenu || trigger.querySelector(".expand-content");
+    return container ? Array.from(container.querySelectorAll("gem-menu-item")) : [];
+  }
+
+  async function loadThinkingLevelItems(trigger) {
+    if (!trigger) return [];
+    const items = getThinkingLevelItems(trigger);
+    if (items.length) return items;
+    if (trigger.getAttribute("aria-expanded") !== "true") trigger.click();
+    return (await waitFor(() => {
+      const found = getThinkingLevelItems(trigger);
+      return found.length ? found : null;
+    }, 1000)) || [];
   }
 
   async function waitFor(check, timeoutMs) {
@@ -1519,12 +1537,12 @@
     const modeMenu = getModeMenu();
     const trigger = getThinkingTrigger(modeMenu);
     if (!trigger) return;
-    if (trigger.getAttribute("aria-expanded") !== "true") trigger.click();
-    const target = getThinkingLevelItems(trigger).find((it) => getMenuItemLabel(it) === label);
+    const items = await loadThinkingLevelItems(trigger);
+    const target = items.find((it) => getMenuItemLabel(it) === label);
     if (target) target.click();
   }
 
-  function showThinkingLevelStep(modeMenu, trigger) {
+  function showThinkingLevelStep(modeMenu, trigger, levels) {
     modeMenu.querySelector(`#${THINK_STEP_ID}`)?.remove();
     const step = document.createElement("div");
     step.id = THINK_STEP_ID;
@@ -1534,7 +1552,7 @@
     header.textContent = getMenuItemLabel(trigger) || "Niveau de réflexion";
     step.appendChild(header);
 
-    for (const level of getThinkingLevelItems(trigger)) {
+    for (const level of levels) {
       const clone = level.cloneNode(true);
       clone.removeAttribute("id");
       clone.setAttribute("data-active", "false");
@@ -1572,10 +1590,10 @@
       const modeMenu = await waitFor(getModeMenu, 1500);
       if (!modeMenu) return;
 
-      const trigger = getThinkingTrigger(modeMenu);
-      if (trigger && getThinkingLevelItems(trigger).length) {
-        showThinkingLevelStep(modeMenu, trigger);
-      } else if (btn.getAttribute("aria-expanded") === "true") {
+      const levels = await loadThinkingLevelItems(getThinkingTrigger(modeMenu));
+      if (levels.length && modeMenu.isConnected) {
+        showThinkingLevelStep(modeMenu, getThinkingTrigger(modeMenu), levels);
+      } else if (getModeMenu()) {
         // Ce modèle n'a pas de niveau de réflexion : on referme
         btn.click();
       }
@@ -1587,7 +1605,7 @@
 
   function handleModelPickClick(e) {
     if (!isEnabled || !e.isTrusted) return;
-    if (e.target instanceof Element && e.target.closest('[data-test-id="bard-mode-menu-button"]')) {
+    if (e.target instanceof Element && e.target.closest('[data-test-id="bard-mode-menu-button"], bard-mode-switcher button')) {
       removeThinkingLevelStep();
       return;
     }

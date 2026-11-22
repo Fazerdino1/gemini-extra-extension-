@@ -686,6 +686,7 @@ gem-menu.ge-think-step-active > :not(#gemini-extra-think-step) {
 
 .ge-think-header {
   padding: 8px 16px 4px;
+  font-family: "Google Sans Flex", "Google Sans Text", "Google Sans", sans-serif;
   font-size: 12px;
   font-weight: 500;
   color: #9aa0a6;
