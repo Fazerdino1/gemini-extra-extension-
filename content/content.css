@@ -362,6 +362,11 @@
   background-color: rgba(232, 234, 237, 0.08);
 }
 
+.ge-token-widget.ge-tok-compact .ge-tok-item:not(.ge-tok-conv),
+.ge-token-widget.ge-tok-compact .ge-tok-sep {
+  display: none;
+}
+
 .ge-token-widget.ge-tok-live {
   background-color: rgba(168, 199, 250, 0.12);
 }

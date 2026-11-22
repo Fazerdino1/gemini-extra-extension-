@@ -502,12 +502,15 @@
       }
 
       const rect = promptEl.getBoundingClientRect();
+      // Barre étroite (téléphone) : compteur de tokens réduit au total pour laisser place au texte
+      document.getElementById(TOKEN_WIDGET_ID)?.classList.toggle("ge-tok-compact", rect.width < 560);
       let left = rect.right + gap;
       let top = rect.top + (rect.height - bubbleSize) / 2;
 
       if (left + bubbleSize > window.innerWidth - 12) {
-        left = window.innerWidth - bubbleSize - 16;
-        top = window.innerHeight - bubbleSize - 16;
+        // Pas de place à droite de la barre (vue étroite) : au-dessus, aligné sur son bord droit
+        left = Math.min(rect.right - bubbleSize, window.innerWidth - bubbleSize - 12);
+        top = rect.top - bubbleSize - 10;
       }
 
       bubble.style.left = `${Math.round(left)}px`;
@@ -2571,6 +2574,16 @@
   }
 
   function findModelRowAnchor() {
+    // Zone d'actions à droite de la barre de saisie : contient le sélecteur de modèle en vue
+    // large, seulement le micro en vue étroite (le sélecteur passe alors dans l'en-tête)
+    const trailing =
+      findPromptBarElement()?.querySelector(".trailing-actions-wrapper") ||
+      document.querySelector(".trailing-actions-wrapper");
+    if (trailing) {
+      const first = Array.from(trailing.children).find((ch) => ch.id !== TOKEN_WIDGET_ID) || null;
+      return { container: trailing, beforeNode: first };
+    }
+
     const modeEl =
       document.querySelector('[data-test-id="bard-mode-menu-button"]') ||
       document.querySelector("bard-mode-switcher");
@@ -2634,6 +2647,7 @@
 
     if (widget.parentElement !== anchor.container) {
       anchor.container.insertBefore(widget, anchor.beforeNode);
+      positionQuotaBubble();
     }
 
     if (!tokenState.historyScanned) {
