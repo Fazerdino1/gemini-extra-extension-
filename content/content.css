@@ -700,3 +700,18 @@ gem-menu.ge-think-step-active > :not(#gemini-extra-think-step) {
 #gemini-extra-think-step:focus {
   outline: none;
 }
+
+/* ============================================================================
+   9. Offres Ultra masquées
+   ============================================================================ */
+/* Modèle verrouillé (ex. "Code et tâches complexes · 4 Carbon") : son identifiant
+   commence par "upsell" seulement quand l'abonnement ne l'inclut pas. Avec Ultra,
+   il a un vrai identifiant de modèle et reste donc affiché. */
+gem-menu[data-test-id="gem-mode-menu"] > gem-menu-item[data-mode-id^="upsell"] {
+  display: none !important;
+}
+
+/* Paramètres : entrée "Passez à Google AI Ultra" (menu large et menu étroit) */
+.settings-upgrade-menu-item {
+  display: none !important;
+}
