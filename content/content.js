@@ -2869,6 +2869,9 @@
   }
 
   async function init() {
+    // Après un rechargement de l'extension sans recharger Gemini, l'ancienne instance laisse
+    // ses boutons dans la page avec des écouteurs morts : on les retire pour les recréer
+    removeUI();
     try {
       const accountKey = getAccountKey();
       const currentPath = window.location.pathname;
